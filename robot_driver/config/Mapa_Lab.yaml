@@ -1,0 +1,7 @@
+image: Mapa_Lab.pgm
+resolution: 0.05
+origin: [-7.13146, -4.27516, 0.0]
+negate: 0
+occupied_thresh: 0.5
+free_thresh: 0.196
+

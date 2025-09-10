@@ -1,0 +1,47 @@
+# --- ekf.yaml ---
+ekf_filter_node:
+  ros__parameters:
+    frequency: 10.0
+    two_d_mode: true
+    publish_tf: true
+    map_frame: map
+    odom_frame: odom
+    base_link_frame: base_link
+    world_frame: odom
+    
+    odom0: /odom/wheel
+    odom0_config: [true, true, true,   # X, Y, Z
+                   false, false, true, # Roll, Pitch, Yaw (no confiable)
+                   false, false, false,  # VX, VY, VZ
+                   false, false, false, # VRoll, VPitch, VYaw
+                   false, false, false] # AX, AY, AZ
+    odom0_differential: false
+    odom0_relative: false
+    odom0_queue_size: 10
+    odom0_nodelay: false
+
+    # --- INPUTS ---
+    # Odometría de las ruedas (Posición X, Y, y orientación Yaw)
+    #odom0: /odom/visual
+    #odom0_config: [false,  false,  false, # X, Y, Z
+     #              false, false, false,  # Roll, Pitch, Yaw
+     #              true, true, false, # VX, VY, VZ
+     #              false, false, true, # VRoll, VPitch, VYaw
+     #              false, false, false] # AX, AY, AZ
+   # odom0_differential: true
+   # odom0_relative: false
+   # odom0_queue_size: 10
+   # odom0_nodelay: false
+#IMU (Orientación Roll, Pitch, Yaw y sus velocidades)
+    imu0: /imu 
+    imu0_config: [false, false, false,
+                  false, false, false,  # Usar orientación absoluta de la IMU
+                  false, false, false,	# Usar velocidades lineales
+                  false, false, true,  # Usar velocidades angulares
+                  false, false, false]  # Usar aceleraciones lineales           
+    imu0_differential: false
+    imu0_queue_size: 10
+    imu0_relative: false
+    imu0_nodelay: false
+    # --- ODOMETRÍA DE RUEDAS ---
+   
