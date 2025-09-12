@@ -18,10 +18,8 @@ from launch_ros.descriptions import ComposableNode
 
 
 def generate_launch_description():
-    # ... (definición de camera_params_file) ...
-    
-    # Ruta al archivo de configuración del EKF
-    ekf_params_file = '/home/luis/Robot/src/robot_driver/config/ekf.yaml'
+  
+    #ekf_params_file = '/home/luis/Robot/src/robot_driver/config/ekf.yaml'
 
     return LaunchDescription([
         # Incluir el launch file de la IMU WitMotion
@@ -47,7 +45,7 @@ def generate_launch_description():
        # ),
 
 
-        # 3. Driver del Robot (ahora publica en /odom/odom_encoder)
+        # 3. Driver del Robot 
         Node(
            package='robot_driver',
            executable='robot_driver_node',
@@ -57,13 +55,13 @@ def generate_launch_description():
 
 
         # 4. Nodo del Filtro de Kalman (EKF)
-        Node(
-            package='robot_localization',
-            executable='ekf_node',
-            name='ekf_filter_node',
-            output='screen',
-            parameters=[ ekf_params_file],
-            remappings=[('odometry/filtered', '/odom')]
-            
-        ),
+       # Node(
+       #     package='robot_localization',
+        #    executable='ekf_node',
+       #     name='ekf_filter_node',
+       #     output='screen',
+       #     parameters=[ ekf_params_file],
+       #     remappings=[('odometry/filtered', '/odom')]
+       #     
+       # ),
     ])
