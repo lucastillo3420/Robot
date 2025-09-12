@@ -21,7 +21,7 @@ class RobotDriverNode(Node):
         self.odom_frame='odom'
         self.base_frame ='base_link'
         self.PPR=537.7   # Pulsos por revolución del encoder
-        self.tf_broadcaster = tf2_ros.TransformBroadcaster(self)
+        #self.tf_broadcaster = tf2_ros.TransformBroadcaster(self)
 
         self.target_v = 0.0
         self.target_omega = 0.0
@@ -32,7 +32,7 @@ class RobotDriverNode(Node):
 
         self.timer_period = 0.05
         self.timer = self.create_timer(self.timer_period, self.update_loop)
-        self.odom_pub = self.create_publisher(Odometry, '/odom', 10)
+        self.odom_pub = self.create_publisher(Odometry, '/odom/wheel', 10)
         #Comprobamos Bateria de roboclaw
         voltage_real, battery_porcentage=self.roboclaw.ReadVoltage()
         self.get_logger().info(f"Voltaje de la batería principal: {voltage_real} V")
@@ -107,24 +107,24 @@ class RobotDriverNode(Node):
         self.odometry.update(v_real_calculada, omega_real_calculada, dt)
         #crear y pblicar Transformaciones TF(odom->base_link)
         
-        t=TransformStamped()
-        t.header.stamp=current_time.to_msg()
-        t.header.frame_id=self.odom_frame
-        t.child_frame_id=self.base_frame
+       # t=TransformStamped()
+       # t.header.stamp=current_time.to_msg()
+       # t.header.frame_id=self.odom_frame
+        #t.child_frame_id=self.base_frame
 
         #Posicion
-        t.transform.translation.x=self.odometry.x
-        t.transform.translation.y=self.odometry.y
-        t.transform.translation.z=0.0#robot plano
+       # t.transform.translation.x=self.odometry.x
+      # t.transform.translation.y=self.odometry.y
+        #t.transform.translation.z=0.0#robot plano
 
         #orientacion
         q=quaternion_from_euler(0,0,self.odometry.theta)
-        t.transform.rotation.x=q[0]
-        t.transform.rotation.y=q[1]
-        t.transform.rotation.z=q[2]
-        t.transform.rotation.w=q[3]
+        #t.transform.rotation.x=q[0]
+       # t.transform.rotation.y=q[1]
+       # t.transform.rotation.z=q[2]
+       # t.transform.rotation.w=q[3]
         #enviar transformacion
-        self.tf_broadcaster.sendTransform(t)
+       # self.tf_broadcaster.sendTransform(t)
         
         # Publicar odometría
         odom_msg = Odometry()
