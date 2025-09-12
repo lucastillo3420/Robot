@@ -1,62 +1,139 @@
 # Robot Móvil Autónomo con VSLAM - Trabajo de Fin de Grado
 
-![Imagen del robot en funcionamiento](https://github.com/lucastillo3420/Robot/blob/main/docs/robot_completo.jpg?raw=true) 
+![Imagen del robot](https://github.com/lucastillo3420/Robot/blob/main/Robot.jpg?raw=true ) 
 
-Este repositorio contiene todo el software, la configuración y la documentación desarrollados para el Trabajo de Fin de Grado: "Diseño e Implementación de un Robot Móvil Autónomo con VSLAM basado en Cámara RGB-D".
+Este repositorio contiene el software, la configuración y la documentación desarrollados para el **Trabajo de Fin de Grado**:
 
-El proyecto abarca el diseño completo, la construcción y la programación de una plataforma robótica de bajo coste capaz de realizar mapeo y navegación autónoma en entornos de interior utilizando ROS 2, RTAB-Map y Nav2.
+> **Diseño e Implementación de un Robot Móvil Autónomo con VSLAM basado en Cámara RGB-D**
 
----
-
-## Características Principales
-
-- **Plataforma Robótica Completa:** Diseño y construcción de un robot de 4 ruedas con tracción diferencial (*skid-steer*).
-- **Control de Bajo Nivel:** Un driver de ROS 2 personalizado que gestiona la cinemática, la odometría de ruedas y la comunicación con las controladoras de motores.
-- **Mapeo Visual-Inercial (VSLAM):** Utiliza **RTAB-Map** para fusionar los datos de una cámara RGB-D y una IMU, generando mapas 2D consistentes y métricamente precisos.
-- **Navegación Autónoma:** Integra la pila de navegación **Nav2** para la localización, planificación de rutas y evasión de obstáculos en mapas previamente generados.
-- **Arquitectura Modular:** El sistema está dividido en paquetes de ROS 2 con responsabilidades claras, siguiendo las mejores prácticas del ecosistema.
+El proyecto incluye el diseño, construcción y programación de una plataforma robótica de bajo coste capaz de **mapear y navegar de forma autónoma en interiores**, utilizando **ROS 2**, **RTAB-Map** y **Nav2**.
 
 ---
 
-## Componentes Hardware
+##  Características Principales
 
-La plataforma ha sido construida utilizando los siguientes componentes principales:
-- **Chasis:** goBILDA Recon de 4 ruedas motrices.
-- **Motores:** 4x Motores planetarios GoBILDA 5203 Series con encoder integrado (537.7 PPR).
-- **Controladoras de Motor:** 2x RoboClaw 2x7A.
-- **Unidad de Procesamiento Principal:** Raspberry Pi 5 (8GB).
-- **Sensor de Percepción Principal:** Cámara inteligente RGB-D Luxonis OAK-D Lite.
-- **Sensor Inercial:** IMU WitMotion WT901C.
-- **Alimentación:** Batería LiPo 4S 3700mAh y placas de regulación de voltaje.
+-  **Plataforma robótica completa:** robot de 4 ruedas con tracción diferencial (*skid-steer*).
+-  **Control de bajo nivel:** driver ROS 2 propio que gestiona cinemática, odometría y comunicación con motores.
+-  **Mapeo visual-inercial (VSLAM):** integración de cámara RGB-D e IMU mediante **RTAB-Map**.
+-  **Navegación autónoma:** pila de navegación **Nav2** para localización, planificación y evasión de obstáculos.
+-  **Arquitectura modular:** paquetes ROS 2 bien estructurados y mantenibles.
 
 ---
 
-## Arquitectura del Software
+##  Componentes Hardware
 
-El sistema opera sobre **Ubuntu 24.04 LTS** y **ROS 2 Jazzy Jalisco**. La arquitectura se compone de los siguientes paquetes y nodos clave:
-
-- **`robot_driver`:** Paquete personalizado que contiene:
-  - `robot_driver_node`: Se comunica con las controladoras RoboClaw, aplica la cinemática y publica la odometría de las ruedas (`/odom/wheel`).
-  - Clases de abstracción para la cinemática, la odometría y la interfaz de hardware.
-
-- **`depthai_ros_driver`:** Driver oficial para la cámara OAK-D Lite.
-- **`witmotion_ros`:** Driver para la IMU WitMotion.
-- **`rtabmap_ros`:** Utilizado para la odometría visual y el SLAM.
-- **`robot_localization` (EKF):** Utilizado para la fusión de la odometría de ruedas y la IMU, proporcionando una odometría base robusta.
-- **`nav2`:** Pila de navegación completa para la localización (AMCL), planificación y control.
+- **Chasis:** goBILDA Recon 4WD  
+- **Motores:** 4x GoBILDA 5203 con encoder (537.7 PPR)  
+- **Controladoras:** 2x RoboClaw 2x7A  
+- **Procesador:** Raspberry Pi 5 (8GB)  
+- **Sensor principal:** Cámara RGB-D Luxonis OAK-D Lite  
+- **IMU:** WitMotion WT901C  
+- **Batería:** LiPo 4S 3700 mAh + reguladores  
 
 ---
 
-## Instalación y Puesta en Marcha
+##  Arquitectura de Software
 
-### 1. Prerrequisitos
-- Un ordenador con Ubuntu 24.04 LTS.
-- ROS 2 Jazzy Jalisco instalado.
-- Git instalado.
+Sistema basado en **Ubuntu 24.04 LTS** y **ROS 2 Jazzy Jalisco**.
 
-### 2. Clonar el Repositorio
-Navega a tu workspace de ROS 2 y clona este repositorio.
+### Paquetes clave:
+- `robot_driver` → driver propio de bajo nivel (cinemática, odometría, motores).
+  - `robot_driver_node.py`: nodo central, suscribe `/cmd_vel` y publica `/odom/wheel`.
+  - **Clases internas**:
+    - `RoboClawInterface`: comunicación con controladoras.
+    - `Kinematics`: cinemática directa e inversa.
+    - `RobotOdometry`: estimación de pose (x, y, θ).
+- `depthai_ros_driver`: driver oficial de la cámara OAK-D Lite.
+- `witmotion_ros`: driver para la IMU.
 
+---
+
+##  Instalación
+
+### Prerrequisitos
+- Ubuntu 24.04 LTS  
+- ROS 2 Jazzy Jalisco  
+- Git
+- RTAB-Map
+- Nav2
+
+### Clonar el repositorio
 ```bash
 cd ~/ros2_ws/src
 git clone --recurse-submodules https://github.com/lucastillo3420/Robot.git
+cd ~/ros2_ws
+colcon build
+source install/setup.bash
+````
+
+---
+
+##  Uso del Sistema
+
+El sistema puede funcionar en **dos modos principales**: **Mapeo** y **Navegación Autónoma**.
+
+---
+
+### 🔹 1. Mapeo del Entorno
+
+Permite crear un mapa nuevo con RTAB-Map.
+
+**Terminal 1 – Sistema de mapeo (cámara + RTAB-Map):**
+
+```bash
+ros2 launch depthai_ros_driver rtabmap.MapaVisual.py
+```
+
+**Terminal 2 – Driver del robot:**
+
+```bash
+ros2 run robot_driver robot_driver_node
+```
+
+**Terminal 3 – Control manual:**
+
+```bash
+# Opción A: Joystick virtual
+ros2 run teleop_twist_qt teleop_twist_qt
+
+# Opción B: Teclado
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
+```
+
+Conduce lentamente el robot por el entorno, cubriendo todas las áreas.
+Para guardar el mapa, cierra primero RTAB-Map con `Ctrl+C`.
+
+---
+
+### 🔹 2. Navegación Autónoma
+
+Usa un mapa previamente creado para navegar con Nav2.
+
+**Terminal 1 – Localización con RTAB-Map:**
+
+```bash
+ros2 launch depthai_ros_driver rtabmap.launchNavegacion.py
+```
+
+**Terminal 2 – Navegación con Nav2:**
+
+```bash
+ros2 launch robot_driver navegacion.launch.py
+```
+
+En **RViz**:
+
+1. Espera a que cargue el mapa.
+2. Usa **2D Pose Estimate** para indicar la posición inicial del robot.
+3. Usa **Nav2 Goal** para enviar un destino.
+
+El robot planificará y navegará de forma autónoma evitando obstáculos.
+
+---
+
+
+
+
+
+
+```
