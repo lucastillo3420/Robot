@@ -17,7 +17,7 @@ from launch_ros.descriptions import ComposableNode
 
 
 def generate_launch_description():
-    # --- Rutas a tus archivos de configuración ---
+ 
     robot_driver_prefix = get_package_share_directory('robot_driver')
     map_file = os.path.join(robot_driver_prefix, 'config', 'Mapa_Lab.yaml')
     nav2_params_file = os.path.join(robot_driver_prefix, 'config', 'Parametros_Nav2.yaml')
@@ -145,7 +145,7 @@ def generate_launch_description():
         controller_server_node,
         planner_server_node,
         bt_navigator_node,
-        depthimage_to_laserscan_node,
+       # depthimage_to_laserscan_node,
         #filtro_node,
         
         
