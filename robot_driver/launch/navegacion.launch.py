@@ -64,7 +64,7 @@ def generate_launch_description():
         name='lifecycle_manager_navigation',
         output='screen',
         parameters=[{'autostart': True},
-                    # ¡CORREGIDO! Hemos quitado 'amcl' de la lista
+                 
                     {'node_names': ['map_server',
                                     #'amcl',
                                     'controller_server',
@@ -81,7 +81,7 @@ def generate_launch_description():
             
         ),
 
-    # El Map Server carga tu mapa guardado
+    
     map_server_node = Node(
         package='nav2_map_server',
         executable='map_server',
@@ -136,7 +136,7 @@ def generate_launch_description():
     )
     
     return LaunchDescription([
-        #robot_driver_node,
+        robot_driver_node,
         
         # Añadimos todos los nodos de Nav2 a la descripción (sin amcl)
         #amcl_node,
